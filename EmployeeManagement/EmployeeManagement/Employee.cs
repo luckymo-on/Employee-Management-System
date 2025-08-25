@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace EmployeeManagement
 {
-	internal class Employee
+	public class Employee
 	{
 		private int empId;
 
@@ -50,7 +50,7 @@ namespace EmployeeManagement
 			set { type = value; }
 		}
 
-        public Employee(int id, string name, string dept, double income, string type)
+        public Employee(int id, string name, double income, string dept,string type)
         {
             EmpId = id;
 			EmpName = name;
@@ -58,7 +58,9 @@ namespace EmployeeManagement
 			AnnualIncome = income;
 			Type = type;
         }
-      
+
+		public Employee() { }
+
 
 
     }
