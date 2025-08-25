@@ -13,7 +13,7 @@ namespace EmployeeManagement
             int choice = 0;
             while (choice != -1)
             {
-                Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Exit\nEnter Your Choice :");
+                Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Calculate Salary\n5.Exit\nEnter Your Choice :");
                 choice = int.Parse(Console.ReadLine());
                 if (choice == 1)
                 {
@@ -28,7 +28,7 @@ namespace EmployeeManagement
                     string type = null;
                     if (ch == "a")
                     {
-                         type= "Permenant";
+                         type= "Permanent";
                     }else if (ch == "b")
                     {
                          type = "Contract";
@@ -38,15 +38,25 @@ namespace EmployeeManagement
                         Console.WriteLine("Invalid input");
                         continue;
                     }
-                    Console.WriteLine("Enter the employee salary :");
-                    double salary = double.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter the annual income :");
+                    double annualIncome = double.Parse(Console.ReadLine());
 
-                    employees.Add(new Employee(employees.Count+1,name,dept,salary,type));
+                    employees.Add(new Employee(employees.Count+1,name,dept,annualIncome,type));
 
                 }
-                else
+                else if (choice == 2) 
                 {
                     //Developing in process
+                }
+                else if (choice == 3)
+                {
+                    //Developing in process
+                }
+                else if (choice == 4)
+                {
+                    double salary = SalaryProcessing.calculateSalary(employees);
+                    Console.WriteLine($"Your salary for this month is {salary}");
+
                 }
             }
 
