@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace EmployeeManagement
 {
@@ -25,12 +26,12 @@ namespace EmployeeManagement
 			set { empName = value; }
 		}
 
-		private double salary;
+		private double annualIncome;
 
-		public double Salary
+		public double AnnualIncome
 		{
-			get { return salary; }
-			set { salary = value; }
+			get { return annualIncome; }
+			set { annualIncome = value; }
 		}
 
 		private string department;
@@ -49,14 +50,15 @@ namespace EmployeeManagement
 			set { type = value; }
 		}
 
-        public Employee(int id, string name, string dept, double salary, string type)
+        public Employee(int id, string name, string dept, double income, string type)
         {
             EmpId = id;
 			EmpName = name;
 			Department = dept;
-			Salary = salary;
+			AnnualIncome = income;
 			Type = type;
         }
+      
 
 
     }
