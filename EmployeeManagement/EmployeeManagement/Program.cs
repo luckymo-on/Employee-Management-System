@@ -6,7 +6,7 @@ namespace EmployeeManagement
     internal class Program
     {
 
-       public static List<Employee> employees = new List<Employee>();
+        public static List<Employee> employees = new List<Employee>();
         static void Main(string[] args)
         {
             try
@@ -50,6 +50,12 @@ namespace EmployeeManagement
                             DeleteEmp();
                             Console.WriteLine("______________________________________");
                             break;
+                        case 5:
+                            Console.WriteLine("______________________________________");
+                            double salary = SalaryProcessing.calculateSalary(employees);
+                            Console.WriteLine($"The total salary is {salary}");
+                            Console.WriteLine("______________________________________");
+                            break;
                         case 6:
                             choice = -1;
                             break;
@@ -63,14 +69,15 @@ namespace EmployeeManagement
 
 
             }
-            catch (Exception ex) {
-            
+            catch (Exception ex)
+            {
+
                 Console.WriteLine(ex.Message);
             }
 
-            
 
-            
+
+
 
         }
 
@@ -102,8 +109,9 @@ namespace EmployeeManagement
                     throw new Exception("Employee not found");
                 }
             }
-            catch (Exception ex) { 
-                Console.WriteLine( ex.Message);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
         }
@@ -167,9 +175,9 @@ namespace EmployeeManagement
                 Console.WriteLine(ex.Message);
             }
 
-                Console.WriteLine("Updation Success");
-                
-            
+            Console.WriteLine("Updation Success");
+
+
         }
 
 
