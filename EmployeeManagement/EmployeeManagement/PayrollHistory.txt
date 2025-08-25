@@ -1,0 +1,1 @@
+[{"PayrollId":100,"EmployeeId":1,"EmpName":"Sanju","Department":"it","Type":"Permanent","BasicPay":8333.333333333334,"Allowance":1666.666666666667,"Deductions":833.3333333333335,"Hours":null,"HourlyRate":null,"Salary":9166.666666666666,"PaymentDate":"2025-08-25"}]
