@@ -23,7 +23,7 @@ namespace EmployeeManagement
                 int choice = 0;
                 while (choice != -1)
                 {
-                    Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Delete employee\n5.Calculate Salary\n6.View Payroll History\n7.Exit\nEnter Your Choice :");
+                    Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Delete employee\n5.Calculate Salary\n6.View Payroll History\n7.Find Employee By Name\n8.Find Employees By Department\n9.PaySlip\n10.Find Employee by Type\n11.Exit\nEnter Your Choice :");
                     choice = int.Parse(Console.ReadLine());
                     switch (choice)
                     {
@@ -63,13 +63,35 @@ namespace EmployeeManagement
                             break;
 
                         case 7:
+                            Console.Write("Enter name to search: ");
+                            string namePart = Console.ReadLine();
+                            ReportService.EmployeeByName(employees, namePart);
+                            break;
+
+                        case 8:
+                            Console.Write("Enter department to search: ");
+                            string dept = Console.ReadLine();
+                            ReportService.EmployeeByDepartment(employees, dept);
+                            break;
+
+                        case 9:
+                            Console.Write("Enter Employee ID: ");
+                            int empId = int.Parse(Console.ReadLine());
+                            ReportService.SalarySummaryByEmployee(empId);
+                            break;
+
+                        case 10:
+                            ReportService.EmployeeByType();
+                            break;
+
+                        case 11:
                             choice = -1;
                             break;
 
 
+
                         default:
                             throw new Exception("Invalid Choice..");
-                            break;
                     }
                 }
 
@@ -108,7 +130,7 @@ namespace EmployeeManagement
                 if (found)
                 {
                     Save();
-                    Console.WriteLine("Deletion Succesfull..");
+                    Console.WriteLine("Deletion Successful..");
                 }
                 else
                 {
@@ -157,6 +179,7 @@ namespace EmployeeManagement
                         employees.Add(emp);
                         Save();
                         break;
+
                     case 2:
                         Console.Write("Enter new Income :");
                         double newIncome = double.Parse(Console.ReadLine());
@@ -164,6 +187,7 @@ namespace EmployeeManagement
                         employees.Add(emp);
                         Save();
                         break;
+
                     case 3:
                         Console.Write("Enter new department :");
                         string newDept = Console.ReadLine();
@@ -171,9 +195,9 @@ namespace EmployeeManagement
                         employees.Add(emp);
                         Save();
                         break;
+
                     default:
                         throw new Exception("Invalid input for Updation...");
-                        break;
                 }
             }
             catch (Exception ex)
