@@ -23,7 +23,7 @@ namespace EmployeeManagement
                 int choice = 0;
                 while (choice != -1)
                 {
-                    Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Delete employee\n5.Calculate Salary\n6.Exit\nEnter Your Choice :");
+                    Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Delete employee\n5.Calculate Salary\n6.View Payroll History\n7.Exit\nEnter Your Choice :");
                     choice = int.Parse(Console.ReadLine());
                     switch (choice)
                     {
@@ -52,11 +52,17 @@ namespace EmployeeManagement
                             break;
                         case 5:
                             Console.WriteLine("______________________________________");
-                            double salary = SalaryProcessing.calculateSalary(employees);
-                            Console.WriteLine($"The total salary is {salary}");
+                            SalaryProcessing.calculateSalary(employees);
                             Console.WriteLine("______________________________________");
                             break;
+
                         case 6:
+                            Console.WriteLine("______________________________________");
+                            PayrollService.display();
+                            Console.WriteLine("______________________________________");
+                            break;
+
+                        case 7:
                             choice = -1;
                             break;
 
