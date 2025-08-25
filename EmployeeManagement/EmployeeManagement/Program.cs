@@ -42,6 +42,12 @@ namespace EmployeeManagement
                         DisplayAll();
                         Console.WriteLine("______________________________________");
                         break;
+                        case 4:
+                        Console.WriteLine("______________________________________");
+                        double salary = SalaryProcessing.calculateSalary(employees);
+                        Console.WriteLine($"The total Salary is {salary}");
+                        Console.WriteLine("______________________________________");
+                        break;
                     case 5:
                         //Exit
                         choice = -1;
