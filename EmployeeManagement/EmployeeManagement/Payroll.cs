@@ -25,6 +25,11 @@ namespace EmployeeManagement
 
         public DateOnly PaymentDate { get; set; }
 
+        public Payroll()
+        {
+            
+        }
+
         public Payroll(int payrollID,int employeeID, string employeeName, string department, string type, double? basicPay, double? allowance, double? deductions,  double? hours, double? hourlyRate, double salary, DateOnly paymentDate)
         {
             PayrollId = payrollID;
@@ -93,6 +98,23 @@ namespace EmployeeManagement
 
             //Saving to File
             Save();
+        }
+        public static void display()
+        {
+            payroll = Fetch();
+            if(payroll.Count==0)
+            {
+                Console.WriteLine("Payroll History is Empty");
+            }
+            else
+            {
+                foreach(Payroll p in payroll)
+                {
+                    Console.WriteLine($"PayrollId: {p.PayrollId}, EmployeeId: {p.EmployeeId}, EmpName: {p.EmpName}, Department: {p.Department}, Type: {p.Type}, BasicPay: {p.BasicPay}, Allowance: {p.Allowance}, Deductions: {p.Deductions}, Hours: {p.Hours}, HourlyRate: {p.HourlyRate}, Salary: {p.Salary}, PaymentDate: {p.PaymentDate}");
+
+                }
+                
+            }
         }
 
         public static List<Payroll> Fetch()
