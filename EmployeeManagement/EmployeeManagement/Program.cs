@@ -14,7 +14,9 @@ namespace EmployeeManagement
             Console.WriteLine("______________________________________");
 
             DisplayAll();
-            
+
+            Console.WriteLine("______________________________________");
+
             int choice = 0;
             while (choice != -1)
             {
@@ -24,16 +26,21 @@ namespace EmployeeManagement
                 {
                     case 1:
                         // Adding New Employee
+                        Console.WriteLine("______________________________________");
                         AddEmployee();
                         Console.WriteLine("______________________________________");
                         break;
 
                     case 2:
                         // Updating Employee
+                        Console.WriteLine("______________________________________");
                         UpdateEmployee();
+                        Console.WriteLine("______________________________________");
                         break;
                     case 3:
+                        Console.WriteLine("______________________________________");
                         DisplayAll();
+                        Console.WriteLine("______________________________________");
                         break;
                     case 5:
                         //Exit
@@ -57,7 +64,7 @@ namespace EmployeeManagement
         {
             try
             {
-                Console.WriteLine("______________________________________");
+                
                 Console.Write("Enter the Employee id :");
                 bool found = false;
                 int id = int.Parse(Console.ReadLine());
@@ -107,7 +114,7 @@ namespace EmployeeManagement
                 }
 
                 Console.WriteLine("Updation Success");
-                Console.WriteLine("______________________________________");
+                
             }
             catch (Exception ex)
             {
@@ -142,7 +149,7 @@ namespace EmployeeManagement
                 {
                     Console.WriteLine($"{item.EmpId} - {item.EmpName} - {item.Department} - {item.Type} - {item.AnnualIncome}");
                 }
-                Console.WriteLine("______________________________________");
+                
             }
         }
 
