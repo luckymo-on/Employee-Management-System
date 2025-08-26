@@ -1,4 +1,1 @@
-<<<<<<< Updated upstream
-[{"EmpId":1,"EmpName":"Sanju","AnnualIncome":100000,"Department":"it","Type":"Permanent"},{"EmpId":2,"EmpName":"manu","AnnualIncome":1000,"Department":"it","Type":"Permanent"},{"EmpId":3,"EmpName":"haripriya","AnnualIncome":500000,"Department":"HR","Type":"Permanent"},{"EmpId":4,"EmpName":"Anju","AnnualIncome":120000,"Department":"HR","Type":"Contract"}]
-=======
->>>>>>> Stashed changes
+[{"EmpId":1,"EmpName":"Anju","AnnualIncome":200000,"Department":"it","Type":"Contract"}]
