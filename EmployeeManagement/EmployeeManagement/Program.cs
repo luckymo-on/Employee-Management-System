@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using System.ComponentModel;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EmployeeManagement
 {
@@ -81,6 +82,8 @@ namespace EmployeeManagement
                             throw new Exception("Invalid Choice..");
                     }
                 }
+
+
             }
             catch (Exception ex)
             {
@@ -97,6 +100,17 @@ namespace EmployeeManagement
             {
                 Console.Write("Enter the Employee id :");
                 int id = int.Parse(Console.ReadLine());
+                SqlConnection connection = ConnectToDb();
+                SqlCommand commandToGetEmpById = connection.CreateCommand();
+                commandToGetEmpById.CommandText = "select * from Employees where EmpId = @id";
+                commandToGetEmpById.Parameters.AddWithValue("@id", id);
+                using (SqlDataReader reader = commandToGetEmpById.ExecuteReader())
+                {
+                    if (!reader.Read())
+                    {
+                        throw new Exception("Employee not found in DataBase");
+                    }
+                }
                 bool found = false;
                 foreach (var item in employees)
                 {
@@ -106,6 +120,13 @@ namespace EmployeeManagement
                         found = true;
                         break;
                     }
+                }
+                SqlCommand commandToDelete = connection.CreateCommand();
+                commandToDelete.CommandText = "delete from Employees where EmpId = @id";
+                commandToDelete.Parameters.AddWithValue("@id", id);
+                if (commandToDelete.ExecuteNonQuery()!=1)
+                {
+                    throw new Exception("Deletion from DataBase failed");
                 }
                 if (found)
                 {
@@ -130,9 +151,21 @@ namespace EmployeeManagement
         {
             try
             {
+                SqlConnection connection = ConnectToDb();
+                SqlCommand commandToGetEmpById = connection.CreateCommand();
+                commandToGetEmpById.CommandText = "select * from Employees where EmpId = @id";
+       
                 Console.Write("Enter the Employee id :");
                 bool found = false;
                 int id = int.Parse(Console.ReadLine());
+                commandToGetEmpById.Parameters.AddWithValue("@id", id);
+                using(SqlDataReader reader = commandToGetEmpById.ExecuteReader())
+                {
+                    if (!reader.Read())
+                    {
+                        throw new Exception("Employee not found in DataBase");
+                    }
+                }
                 Employee emp = new Employee();
                 foreach (var item in employees)
                 {
@@ -140,7 +173,6 @@ namespace EmployeeManagement
                     {
                         emp = item;
                         found = true;
-                        employees = employees.Where(x => x.EmpId != id).ToList();
                         break;
                     }
                 }
@@ -148,44 +180,71 @@ namespace EmployeeManagement
                 {
                     throw new Exception("Invalid User id Or No user with this id");
                 }
-                Console.WriteLine("1.Name\n2.AnnualInconme\n3.department\nWhat you whant to updat : ");
+                Console.WriteLine("1.Name\n2.AnnualInconme\n3.department\nWhat you whant to update : ");
                 int ch = int.Parse(Console.ReadLine());
                 switch (ch)
                 {
                     case 1:
                         Console.Write("Enter new name :");
                         string newName = Console.ReadLine();
+                        employees = employees.Where(x => x.EmpId != id).ToList();
                         emp.EmpName = newName;
+                        SqlCommand commandToUpdateName = connection.CreateCommand();
+                        commandToUpdateName.CommandText = "update Employees set EmpName = @name where EmpId = @id";
+                        commandToUpdateName.Parameters.AddWithValue("@name", newName);
+                        commandToUpdateName.Parameters.AddWithValue("@id", id);
+                        if(commandToUpdateName.ExecuteNonQuery()!=1)
+                        {
+                            throw new Exception("Updation in Db Failed");
+                        }
+
                         employees.Add(emp);
                         Save();
+                        Console.WriteLine("Updation Success");
                         break;
 
                     case 2:
                         Console.Write("Enter new Income :");
                         double newIncome = double.Parse(Console.ReadLine());
+                        employees = employees.Where(x => x.EmpId != id).ToList();
                         emp.AnnualIncome = newIncome;
+                        SqlCommand commandToUpdateIncome = connection.CreateCommand();
+                        commandToUpdateIncome.CommandText = "update Employees set Income = @income where EmpId = @id";
+                        commandToUpdateIncome.Parameters.AddWithValue("@income", newIncome);
+                        commandToUpdateIncome.Parameters.AddWithValue("@id", id);
+                        if (commandToUpdateIncome.ExecuteNonQuery() != 1)
+                        {
+                            throw new Exception("Updation in Db Failed");
+                        }
                         employees.Add(emp);
                         Save();
+                        Console.WriteLine("Updation Success");
                         break;
 
                     case 3:
                         Console.Write("Enter new department :");
                         string newDept = Console.ReadLine();
+                        employees = employees.Where(x => x.EmpId != id).ToList();
                         emp.Department = newDept;
                         employees.Add(emp);
                         Save();
+                        Console.WriteLine("Updation Success");
                         break;
 
                     default:
                         throw new Exception("Invalid input for Updation...");
                 }
             }
+            catch (FormatException fe)
+            {
+                Console.WriteLine(fe.Message);
+            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            Console.WriteLine("Updation Success");
+            
 
 
         }
@@ -196,7 +255,7 @@ namespace EmployeeManagement
         {
             try
             {
-                String json = null;
+                string json = null;
                 using (StreamReader streamReader = new StreamReader("../../../db.txt"))
                 {
                     json = streamReader.ReadToEnd();
@@ -299,8 +358,16 @@ namespace EmployeeManagement
             {
                 using (StreamWriter sr = new StreamWriter("../../../db.txt"))
                 {
-                    string data = JsonSerializer.Serialize(employees);
-                    sr.WriteLine(data);
+                    if (employees.Count > 0) {
+                        string data = JsonSerializer.Serialize(employees);
+                        sr.WriteLine(data);
+                    }
+                    else
+                    {
+                        sr.WriteLine("");
+                    }
+
+                        
                 }
             }
             catch (Exception ex)
@@ -312,7 +379,11 @@ namespace EmployeeManagement
         public static SqlConnection ConnectToDb()
         {
             SqlConnection sqlConnection = new SqlConnection();
+<<<<<<< HEAD
             sqlConnection.ConnectionString = "Data Source=447D79DDBACD5CB\\SQLEXPRESS;Initial Catalog=EmployeeManagementSystem;Integrated Security=True;Trust Server Certificate=True";
+=======
+            sqlConnection.ConnectionString = "Data Source=03A0EFA6CC12509\\SQLEXPRESS;Initial Catalog=EMS_DB;Integrated Security=True;Trust Server Certificate=True";
+>>>>>>> 0025ee1131db54371cbad9b46929095716875534
             sqlConnection.Open();
             return sqlConnection;
         }
