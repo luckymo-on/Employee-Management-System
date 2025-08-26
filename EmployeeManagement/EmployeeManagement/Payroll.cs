@@ -65,7 +65,9 @@ namespace EmployeeManagement
             payroll = Fetch();
 
             //Checking for Duplicate payroll entries
-            if (payroll.Any(p => p.EmployeeId == employeeID && p.EmpName == employeeName))
+            if(payroll.Any(p => p.EmployeeId == employeeID &&
+            p.PaymentDate.Month == date.Month &&
+            p.PaymentDate.Year == date.Year))
             {
                 throw new InvalidOperationException($"Payroll entry already exists for the Employee {employeeName} on {date}");
             }
@@ -97,7 +99,9 @@ namespace EmployeeManagement
             payroll = Fetch();
 
             //Checking for Duplicate payroll entries
-            if (payroll.Any(p => p.EmployeeId == employeeID && p.EmpName == employeeName))
+            if (payroll.Any(p => p.EmployeeId == employeeID && 
+            p.PaymentDate.Month==date.Month &&
+            p.PaymentDate.Year==date.Year))
             {
                 throw new InvalidOperationException($"Payroll entry already exists for the Employee {employeeName} on {date}");
 
