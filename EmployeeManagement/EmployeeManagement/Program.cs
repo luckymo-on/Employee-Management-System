@@ -379,7 +379,7 @@ namespace EmployeeManagement
         public static SqlConnection ConnectToDb()
         {
             SqlConnection sqlConnection = new SqlConnection();
-            sqlConnection.ConnectionString = "Data Source=68BB9B2B44F1500\\SQLEXPRESS;Initial Catalog=EmployeeManagement;Integrated Security=True;Trust Server Certificate=True";
+            sqlConnection.ConnectionString = "Data Source=03A0EFA6CC12509\\SQLEXPRESS;Initial Catalog=EMS_DB;Integrated Security=True;Trust Server Certificate=True";
             sqlConnection.Open();
             return sqlConnection;
         }

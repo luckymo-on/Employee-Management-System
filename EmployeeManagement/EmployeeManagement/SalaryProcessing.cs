@@ -1,4 +1,55 @@
-﻿using System;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+
+//namespace EmployeeManagement
+//{
+//    public static class SalaryProcessing
+//    {
+//        public static double calculateSalary(List<Employee> employees)
+//        {
+//            try
+//            {
+//                Console.WriteLine("Enter Employee id");
+//                int id = int.Parse(Console.ReadLine());
+//                var emp = employees.Find(e => e.EmpId == id);
+//                if (emp == null) throw new KeyNotFoundException("Employee not found");
+
+//                double salary;
+
+//                if (emp.Type == "Permanent")
+//                {
+//                    salary = SalaryCalculator.CalculatePermanent(emp.AnnualIncome);
+//                    Console.WriteLine($"Salary: {salary}");
+
+//                    PayrollService.AddPayroll(emp.EmpId, emp.EmpName, emp.Department, emp.Type,
+//                                              emp.AnnualIncome / 12, (emp.AnnualIncome / 12) * 0.2, (emp.AnnualIncome / 12) * 0.1, salary);
+//                }
+//                else
+//                {
+//                    Console.WriteLine("Enter the hours worked");
+//                    double hours = double.Parse(Console.ReadLine());
+
+//                    salary = SalaryCalculator.CalculateContract(hours);
+//                    Console.WriteLine($"Salary: {salary}");
+
+//                    PayrollService.AddPayroll(emp.EmpId, emp.EmpName, emp.Department, emp.Type, hours, 500.0, salary);
+//                }
+
+//                return salary;
+//            }
+//            catch (Exception ex)
+//            {
+//                Console.WriteLine("Error in calculateSalary: " + ex.Message);
+//                return 0;
+//            }
+//        }
+//    }
+//}
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +71,8 @@ namespace EmployeeManagement
                 if (emp == null) throw new KeyNotFoundException("Employee not found");
                 if (emp.Type == "Permanent")
                 {
-                    double BasicPay = Math.Round(emp.AnnualIncome / 12,2);
-                    double Allowance = Math.Round((BasicPay * 20) / 100,2) ;
+                    double BasicPay = Math.Round(emp.AnnualIncome / 12, 2);
+                    double Allowance = Math.Round((BasicPay * 20) / 100, 2);
                     double Deductions = Math.Round((BasicPay * 10) / 100, 2);
 
                     salary = BasicPay + Allowance - Deductions;
@@ -36,12 +87,12 @@ namespace EmployeeManagement
                 {
                     Console.WriteLine("Enter the hours worked");
                     double hours = double.Parse(Console.ReadLine());
-                    Math.Round(hours,2);
+                    Math.Round(hours, 2);
 
                     if (hours < 0) throw new ArgumentOutOfRangeException("Hours worked cannot be negative");
 
-                    double HourlyRate = Math.Round(500.00,2);
-                    salary = Math.Round(hours * HourlyRate,2);
+                    double HourlyRate = Math.Round(500.00, 2);
+                    salary = Math.Round(hours * HourlyRate, 2);
 
                     Console.WriteLine($"Hours Worked: {hours}");
                     Console.WriteLine($"Hourly Rates: {HourlyRate}");
