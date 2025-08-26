@@ -81,8 +81,6 @@ namespace EmployeeManagement
                             throw new Exception("Invalid Choice..");
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -349,7 +347,7 @@ namespace EmployeeManagement
                     case 3:
                         Console.WriteLine("Enter employee ID (PaySlip)");
                         int id = int.Parse(Console.ReadLine());
-                        ReportService.SalarySummaryByEmployee(id);
+                        ReportService.PaySlip(id);
                         break;
 
                     case 4:
