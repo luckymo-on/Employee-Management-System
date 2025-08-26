@@ -316,14 +316,22 @@ namespace EmployeeManagement
                 {
                     throw new Exception("Invalid input");
                 }
-                Console.WriteLine("Enter the employee salary :");
+                Console.WriteLine("Enter the employee annual income :");
                 double income = double.Parse(Console.ReadLine());
+                int id = 0;
+                if(employees.Count > 0) 
+                {
+                    id = employees.Max(x => x.EmpId) + 1;
+                }
+                else
+                {
+                    id++;
+                }
                 SqlConnection connection = ConnectToDb();
-                Console.WriteLine(connection.State);
 
                 SqlCommand  commandsToIn =connection.CreateCommand();
                 commandsToIn.CommandText = "INSERT INTO Employees (EmpId, EmpName, Income, Dept, Type) VALUES (@id, @name, @income, @dept, @type)";
-                commandsToIn.Parameters.AddWithValue("@id", employees.Count + 1);
+                commandsToIn.Parameters.AddWithValue("@id", id);
                 commandsToIn.Parameters.AddWithValue("@name", name);
                 commandsToIn.Parameters.AddWithValue("@income", income);
                 commandsToIn.Parameters.AddWithValue("@dept", dept);
@@ -341,7 +349,7 @@ namespace EmployeeManagement
                 }
                 
 
-                    employees.Add(new Employee(employees.Count + 1, name, income, dept, type));
+                    employees.Add(new Employee(id, name, income, dept, type));
 
                 Save();
             }
@@ -379,11 +387,7 @@ namespace EmployeeManagement
         public static SqlConnection ConnectToDb()
         {
             SqlConnection sqlConnection = new SqlConnection();
-<<<<<<< HEAD
-            sqlConnection.ConnectionString = "Data Source=447D79DDBACD5CB\\SQLEXPRESS;Initial Catalog=EmployeeManagementSystem;Integrated Security=True;Trust Server Certificate=True";
-=======
-            sqlConnection.ConnectionString = "Data Source=03A0EFA6CC12509\\SQLEXPRESS;Initial Catalog=EMS_DB;Integrated Security=True;Trust Server Certificate=True";
->>>>>>> 0025ee1131db54371cbad9b46929095716875534
+            sqlConnection.ConnectionString = "Data Source=68BB9B2B44F1500\\SQLEXPRESS;Initial Catalog=EmployeeManagement;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
             sqlConnection.Open();
             return sqlConnection;
         }
@@ -393,39 +397,48 @@ namespace EmployeeManagement
 
             while (true)
             {
-                Console.WriteLine("********************************");
+                Console.WriteLine("______________________________________");
                 Console.WriteLine("1. Find Employees By Name");
                 Console.WriteLine("2. Display All Employees By Department");
                 Console.WriteLine("3. PaySlip");
                 Console.WriteLine("4. Display All Employees By Type");
                 Console.WriteLine("5. Exit");
-                Console.WriteLine("Enter Choice");
+                Console.Write("Enter Choice :");
+                
                 int ch = int.Parse(Console.ReadLine());
                 switch (ch)
                 {
                     case 1:
-                        Console.WriteLine("Enter Name to search");
+                        Console.WriteLine("______________________________________");
+                        Console.Write("Enter Name to search :");
                         string name = Console.ReadLine();
+                        Console.WriteLine();
                         ReportService.EmployeeByName(employees, name);
                         break;
 
                     case 2:
-                        Console.WriteLine("Enter Department to search");
+                        Console.WriteLine("______________________________________");
+                        Console.Write("Enter Department to search :");
                         string dept = Console.ReadLine();
+                        Console.WriteLine();
                         ReportService.EmployeeByDepartment(employees, dept);
                         break;
 
                     case 3:
-                        Console.WriteLine("Enter employee ID (PaySlip)");
+                        Console.WriteLine("______________________________________");
+                        Console.Write("Enter employee ID (PaySlip) :");
                         int id = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
                         ReportService.PaySlip(id);
                         break;
 
                     case 4:
+                        Console.WriteLine("______________________________________");
                         ReportService.EmployeeByType();
                         break;
 
                     case 5:
+                        Console.WriteLine("______________________________________");
                         return;
 
                     default:
