@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -27,10 +28,10 @@ namespace EmployeeManagement
 
         public Payroll()
         {
-            
+
         }
 
-        public Payroll(int payrollID,int employeeID, string employeeName, string department, string type, double? basicPay, double? allowance, double? deductions,  double? hours, double? hourlyRate, double salary, DateOnly paymentDate)
+        public Payroll(int payrollID, int employeeID, string employeeName, string department, string type, double? basicPay, double? allowance, double? deductions, double? hours, double? hourlyRate, double salary, DateOnly paymentDate)
         {
             PayrollId = payrollID;
             EmployeeId = employeeID;
@@ -44,7 +45,6 @@ namespace EmployeeManagement
             HourlyRate = hourlyRate;
             Salary = salary;
             PaymentDate = paymentDate;
-            Type = type;
         }
 
 
@@ -53,6 +53,7 @@ namespace EmployeeManagement
     {
         private const int id = 100;
         private static int payrollID = 0;
+
         public static List<Payroll> payroll = new List<Payroll>();
 
         //AddPayroll for Permanent employees
@@ -68,22 +69,23 @@ namespace EmployeeManagement
             {
                 throw new InvalidOperationException($"Payroll entry already exists for the Employee {employeeName} on {date}");
             }
-           
+
             if (payroll.Count == 0)
             {
                 payrollID = id;
             }
             else
             {
-                payrollID =id+ payroll.Count;
+                int max = payroll.Max(p => p.PayrollId);
+                payrollID = max + 1;
             }
 
             //Adding to the list
-            payroll.Add(new Payroll(payrollID,employeeID, employeeName, department, type, basicPay, allowance, deductions, null, null, salary, date));
-
+            Payroll newPayroll = new Payroll(payrollID, employeeID, employeeName, department, type, basicPay, allowance, deductions, null, null, salary, date);
+            payroll.Add(newPayroll);
             //Saving to the file
-            Save();
-            
+            Save(newPayroll);
+
         }
 
         //AddPayroll for Contract employees
@@ -98,7 +100,7 @@ namespace EmployeeManagement
             if (payroll.Any(p => p.EmployeeId == employeeID && p.EmpName == employeeName))
             {
                 throw new InvalidOperationException($"Payroll entry already exists for the Employee {employeeName} on {date}");
-                
+
             }
 
             if (payroll.Count == 0)
@@ -107,62 +109,89 @@ namespace EmployeeManagement
             }
             else
             {
-                payrollID =id+ payroll.Count;
+                int max = payroll.Max(p => p.PayrollId);
+                payrollID = max + 1;
             }
 
             //Adding to the list
-            payroll.Add(new Payroll(payrollID,employeeID, employeeName, department, type,null,null,null, hours, hourlyRate, salary, date));
-
+             Payroll newPayroll=new Payroll(payrollID, employeeID, employeeName, department, type, null, null, null, hours, hourlyRate, salary, date);
+            payroll.Add(newPayroll);
             //Saving to File
-            Save();
+            Save(newPayroll);
         }
         public static void display()
         {
             payroll = Fetch();
-            if(payroll.Count==0)
+            if (payroll.Count == 0)
             {
                 throw new InvalidOperationException("Payroll History is Empty");
             }
             else
             {
-                foreach(Payroll p in payroll)
+                foreach (Payroll p in payroll)
                 {
                     Console.WriteLine($"PayrollId: {p.PayrollId}, EmployeeId: {p.EmployeeId}, EmpName: {p.EmpName}, Department: {p.Department}, Type: {p.Type}, BasicPay: {p.BasicPay}, Allowance: {p.Allowance}, Deductions: {p.Deductions}, Hours: {p.Hours}, HourlyRate: {p.HourlyRate}, Salary: {p.Salary}, PaymentDate: {p.PaymentDate}");
 
                 }
-                
+
             }
         }
 
         public static List<Payroll> Fetch()
         {
             List<Payroll> temp = new List<Payroll>();
-            using(StreamReader sr=new StreamReader("../../../PayrollHistory.txt"))
+            using (StreamReader sr = new StreamReader("../../../PayrollHistory.txt"))
             {
                 string data;
-                while((data = sr.ReadLine()) != null)
+                while ((data = sr.ReadLine()) != null)
                 {
                     if (!string.IsNullOrWhiteSpace(data))
                     {
-                        Payroll record=JsonSerializer.Deserialize<Payroll>(data);
+                        Payroll record = JsonSerializer.Deserialize<Payroll>(data);
                         temp.Add(record);
                     }
                 }
             }
             return temp;
         }
-        public static void Save()
+        public static void Save(Payroll newPayroll)
         {
-            using (StreamWriter sw=new StreamWriter("../../../PayrollHistory.txt"))
+
+            //Saving to File
+            using (StreamWriter sw = new StreamWriter("../../../PayrollHistory.txt"))
             {
-                foreach(var record in payroll)
+                foreach (var record in payroll)
                 {
                     string data = JsonSerializer.Serialize(record, new JsonSerializerOptions { WriteIndented = false });
                     sw.WriteLine(data);
                 }
-                
-                
+
             }
+
+            //Saving to DB
+
+            using (SqlConnection connection = Program.ConnectToDb())//Calling the function from program class
+            {
+                Console.WriteLine(connection.State);
+                SqlCommand cmd = connection.CreateCommand();
+                cmd.CommandText = "INSERT INTO Payroll (PayrollId, EmployeeId, EmpName, Department, Type, BasicPay, Allowance, Deductions, Hours, HourlyRate, Salary, PaymentDate) VALUES (@PayrollId, @EmployeeId, @EmpName, @Department, @Type, @BasicPay, @Allowance, @Deductions, @Hours, @HourlyRate, @Salary, @PaymentDate)";
+                cmd.Parameters.AddWithValue("@PayrollId", newPayroll.PayrollId);
+                cmd.Parameters.AddWithValue("@EmployeeId", newPayroll.EmployeeId);
+                cmd.Parameters.AddWithValue("@EmpName", newPayroll.EmpName);
+                cmd.Parameters.AddWithValue("@Department", newPayroll.Department);
+                cmd.Parameters.AddWithValue("@Type", newPayroll.Type);
+                cmd.Parameters.AddWithValue("@BasicPay", newPayroll.BasicPay ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Allowance", newPayroll.Allowance ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Deductions", newPayroll.Deductions ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Hours", newPayroll.Hours ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@HourlyRate", newPayroll.HourlyRate ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Salary", newPayroll.Salary);
+                cmd.Parameters.AddWithValue("@PaymentDate", newPayroll.PaymentDate.ToDateTime(TimeOnly.MinValue));
+
+                cmd.ExecuteNonQuery();
+            }
+           
+
         }
     }
 }
