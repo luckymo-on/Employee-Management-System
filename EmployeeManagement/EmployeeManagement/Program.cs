@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Microsoft.Data.SqlClient;
 using System.Text.Json;
 
 namespace EmployeeManagement
@@ -260,8 +261,30 @@ namespace EmployeeManagement
                 }
                 Console.WriteLine("Enter the employee salary :");
                 double income = double.Parse(Console.ReadLine());
+                SqlConnection connection = ConnectToDb();
+                Console.WriteLine(connection.State);
 
-                employees.Add(new Employee(employees.Count + 1, name, income, dept, type));
+                SqlCommand  commandsToIn =connection.CreateCommand();
+                commandsToIn.CommandText = "INSERT INTO Employees (EmpId, EmpName, Income, Dept, Type) VALUES (@id, @name, @income, @dept, @type)";
+                commandsToIn.Parameters.AddWithValue("@id", employees.Count + 1);
+                commandsToIn.Parameters.AddWithValue("@name", name);
+                commandsToIn.Parameters.AddWithValue("@income", income);
+                commandsToIn.Parameters.AddWithValue("@dept", dept);
+                commandsToIn.Parameters.AddWithValue("@type", type);
+
+                int succes = commandsToIn.ExecuteNonQuery();
+                connection.Close();
+                if(succes > 0)
+                {
+                    Console.WriteLine("Added to database Also");
+                }
+                else
+                {
+                    throw new Exception("Adding to database failed..");
+                }
+                
+
+                    employees.Add(new Employee(employees.Count + 1, name, income, dept, type));
 
                 Save();
             }
@@ -286,6 +309,14 @@ namespace EmployeeManagement
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public static SqlConnection ConnectToDb()
+        {
+            SqlConnection sqlConnection = new SqlConnection();
+            sqlConnection.ConnectionString = "Data Source=68BB9B2B44F1500\\SQLEXPRESS;Initial Catalog=EmployeeManagement;Integrated Security=True;Trust Server Certificate=True";
+            sqlConnection.Open();
+            return sqlConnection;
         }
 
         public static void ReportServiceMenu()
