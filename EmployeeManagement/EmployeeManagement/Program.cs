@@ -23,8 +23,7 @@ namespace EmployeeManagement
                 int choice = 0;
                 while (choice != -1)
                 {
-                    Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Delete employee\n5.Calculate Salary\n6.View Payroll History\n7.Find Employee By Name\n8.Find Employees By Department\n9.PaySlip\n10.Find Employee by Type\n11.Exit\nEnter Your Choice :");
-                    choice = int.Parse(Console.ReadLine());
+                    Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Delete employee\n5.Calculate Salary\n6.View Payroll History\n7.Report Service Menu\n8.Exit\nEnter Your Choice :"); choice = int.Parse(Console.ReadLine());
                     switch (choice)
                     {
                         case 1:
@@ -70,32 +69,12 @@ namespace EmployeeManagement
                             break;
 
                         case 7:
-                            Console.Write("Enter name to search: ");
-                            string namePart = Console.ReadLine();
-                            ReportService.EmployeeByName(employees, namePart);
+                            ReportServiceMenu();
                             break;
 
                         case 8:
-                            Console.Write("Enter department to search: ");
-                            string dept = Console.ReadLine();
-                            ReportService.EmployeeByDepartment(employees, dept);
-                            break;
-
-                        case 9:
-                            Console.Write("Enter Employee ID: ");
-                            int empId = int.Parse(Console.ReadLine());
-                            ReportService.SalarySummaryByEmployee(empId);
-                            break;
-
-                        case 10:
-                            ReportService.EmployeeByType();
-                            break;
-
-                        case 11:
                             choice = -1;
                             break;
-
-
 
                         default:
                             throw new Exception("Invalid Choice..");
@@ -109,11 +88,6 @@ namespace EmployeeManagement
 
                 Console.WriteLine(ex.Message);
             }
-
-
-
-
-
         }
 
 
@@ -311,6 +285,53 @@ namespace EmployeeManagement
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        public static void ReportServiceMenu()
+        {
+
+            while (true)
+            {
+                Console.WriteLine("********************************");
+                Console.WriteLine("1. Find Employees By Name");
+                Console.WriteLine("2. Display All Employees By Department");
+                Console.WriteLine("3. PaySlip");
+                Console.WriteLine("4. Display All Employees By Type");
+                Console.WriteLine("5. Exit");
+                Console.WriteLine("Enter Choice");
+                int ch = int.Parse(Console.ReadLine());
+                switch (ch)
+                {
+                    case 1:
+                        Console.WriteLine("Enter Name to search");
+                        string name = Console.ReadLine();
+                        ReportService.EmployeeByName(employees, name);
+                        break;
+
+                    case 2:
+                        Console.WriteLine("Enter Department to search");
+                        string dept = Console.ReadLine();
+                        ReportService.EmployeeByDepartment(employees, dept);
+                        break;
+
+                    case 3:
+                        Console.WriteLine("Enter employee ID (PaySlip)");
+                        int id = int.Parse(Console.ReadLine());
+                        ReportService.SalarySummaryByEmployee(id);
+                        break;
+
+                    case 4:
+                        ReportService.EmployeeByType();
+                        break;
+
+                    case 5:
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
+                }
             }
         }
     }

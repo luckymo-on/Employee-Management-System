@@ -61,19 +61,36 @@ namespace EmployeeManagement
             }
 
             var latest = payrolls.First();
-            Console.WriteLine("----- Payslip -----");
-            Console.WriteLine($"EmployeeId : {latest.EmployeeId}");
-            Console.WriteLine($"Name       : {latest.EmpName}");
-            Console.WriteLine($"Department : {latest.Department}");
-            Console.WriteLine($"Type       : {latest.Type}");
-            Console.WriteLine($"Basic Pay  : {latest.BasicPay}");
-            Console.WriteLine($"Allowance  : {latest.Allowance}");
-            Console.WriteLine($"Deductions : {latest.Deductions}");
-            Console.WriteLine($"Hours      : {latest.Hours}");
-            Console.WriteLine($"HourlyRate : {latest.HourlyRate}");
-            Console.WriteLine($"Salary     : {latest.Salary}");
-            Console.WriteLine($"Date       : {latest.PaymentDate}");
-            Console.WriteLine("-------------------");
+            if(latest.Type == "Permanent")
+            {
+                Console.WriteLine("----- Payslip -----");
+                Console.WriteLine($"EmployeeId : {latest.EmployeeId}");
+                Console.WriteLine($"Name       : {latest.EmpName}");
+                Console.WriteLine($"Department : {latest.Department}");
+                Console.WriteLine($"Type       : {latest.Type}");
+                Console.WriteLine($"Basic Pay  : {latest.BasicPay}");
+                Console.WriteLine($"Allowance  : {latest.Allowance}");
+                Console.WriteLine($"Deductions : {latest.Deductions}");
+                Console.WriteLine($"Salary     : {latest.Salary}");
+                Console.WriteLine($"Date       : {latest.PaymentDate}");
+                Console.WriteLine("-------------------\n");
+            }
+            else if(latest.Type == "Contract")
+            {
+                Console.WriteLine("----- Payslip -----");
+                Console.WriteLine($"EmployeeId : {latest.EmployeeId}");
+                Console.WriteLine($"Name       : {latest.EmpName}");
+                Console.WriteLine($"Department : {latest.Department}");
+                Console.WriteLine($"Type       : {latest.Type}");
+                Console.WriteLine($"Basic Pay  : {latest.BasicPay}");
+                Console.WriteLine($"Allowance  : {latest.Allowance}");
+                Console.WriteLine($"Deductions : {latest.Deductions}");
+                Console.WriteLine($"Hours      : {latest.Hours}");
+                Console.WriteLine($"HourlyRate : {latest.HourlyRate}");
+                Console.WriteLine($"Salary     : {latest.Salary}");
+                Console.WriteLine($"Date       : {latest.PaymentDate}");
+                Console.WriteLine("-------------------\n");
+            }
         }
 
         // Find Employees by Type
