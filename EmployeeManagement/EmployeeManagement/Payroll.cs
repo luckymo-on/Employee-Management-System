@@ -135,6 +135,7 @@ namespace EmployeeManagement
                 }
 
             }
+            Console.WriteLine("______________________________________");
         }
 
         public static List<Payroll> Fetch()
