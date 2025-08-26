@@ -47,11 +47,12 @@ namespace EmployeeManagement
         }
 
         // Generate salary summary (latest payroll entry for given employee)
-        public static void SalarySummaryByEmployee(int empId)
+        public static void PaySlip(int empId)
         {
             var payrolls = PayrollService.Fetch()
                 .Where(p => p.EmployeeId == empId)
                 .OrderByDescending(p => p.PaymentDate)
+                .Take(3) // last 3 months
                 .ToList();
 
             if (payrolls.Count == 0)
@@ -60,38 +61,42 @@ namespace EmployeeManagement
                 return;
             }
 
-            var latest = payrolls.First();
-            if(latest.Type == "Permanent")
+            Console.WriteLine("\nAvailable Payslips (Last 3 Months):");
+            for (int i = 0; i < payrolls.Count; i++)
             {
-                Console.WriteLine("----- Payslip -----");
-                Console.WriteLine($"EmployeeId : {latest.EmployeeId}");
-                Console.WriteLine($"Name       : {latest.EmpName}");
-                Console.WriteLine($"Department : {latest.Department}");
-                Console.WriteLine($"Type       : {latest.Type}");
-                Console.WriteLine($"Basic Pay  : {latest.BasicPay}");
-                Console.WriteLine($"Allowance  : {latest.Allowance}");
-                Console.WriteLine($"Deductions : {latest.Deductions}");
-                Console.WriteLine($"Salary     : {latest.Salary}");
-                Console.WriteLine($"Date       : {latest.PaymentDate}");
-                Console.WriteLine("-------------------\n");
+                var p = payrolls[i];
+                Console.WriteLine($"{i + 1}. {p.PaymentDate:MMMM yyyy} (Salary: {p.Salary})");
             }
-            else if(latest.Type == "Contract")
+
+            Console.Write("\nSelect a month (1 - {0}): ", payrolls.Count);
+            if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > payrolls.Count)
             {
-                Console.WriteLine("----- Payslip -----");
-                Console.WriteLine($"EmployeeId : {latest.EmployeeId}");
-                Console.WriteLine($"Name       : {latest.EmpName}");
-                Console.WriteLine($"Department : {latest.Department}");
-                Console.WriteLine($"Type       : {latest.Type}");
-                Console.WriteLine($"Basic Pay  : {latest.BasicPay}");
-                Console.WriteLine($"Allowance  : {latest.Allowance}");
-                Console.WriteLine($"Deductions : {latest.Deductions}");
-                Console.WriteLine($"Hours      : {latest.Hours}");
-                Console.WriteLine($"HourlyRate : {latest.HourlyRate}");
-                Console.WriteLine($"Salary     : {latest.Salary}");
-                Console.WriteLine($"Date       : {latest.PaymentDate}");
-                Console.WriteLine("-------------------\n");
+                Console.WriteLine("Invalid choice. Exiting payslip generation.");
+                return;
             }
+
+            var selected = payrolls[choice - 1];
+
+            Console.WriteLine("\n----- Payslip -----");
+            Console.WriteLine($"EmployeeId : {selected.EmployeeId}");
+            Console.WriteLine($"Name       : {selected.EmpName}");
+            Console.WriteLine($"Department : {selected.Department}");
+            Console.WriteLine($"Type       : {selected.Type}");
+            Console.WriteLine($"Basic Pay  : {selected.BasicPay}");
+            Console.WriteLine($"Allowance  : {selected.Allowance}");
+            Console.WriteLine($"Deductions : {selected.Deductions}");
+
+            if (selected.Type == "Contract")
+            {
+                Console.WriteLine($"Hours      : {selected.Hours}");
+                Console.WriteLine($"HourlyRate : {selected.HourlyRate}");
+            }
+
+            Console.WriteLine($"Salary     : {selected.Salary}");
+            Console.WriteLine($"Date       : {selected.PaymentDate:dd-MMM-yyyy}");
+            Console.WriteLine("-------------------\n");
         }
+
 
         // Find Employees by Type
         public static void EmployeeByType()
