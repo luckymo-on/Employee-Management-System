@@ -58,8 +58,15 @@ namespace EmployeeManagement
 
                         case 6:
                             Console.WriteLine("______________________________________");
-                            PayrollService.display();
-                            Console.WriteLine("______________________________________");
+                            try
+                            {
+                                PayrollService.display();
+                            }
+                            catch(Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("______________________________________");
+                            }
                             break;
 
                         case 7:

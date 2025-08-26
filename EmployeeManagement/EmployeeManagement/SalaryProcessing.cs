@@ -58,6 +58,7 @@ namespace EmployeeManagement
             {
                 Console.WriteLine(ex.Message);
                 return 0;
+
             }
 
         }

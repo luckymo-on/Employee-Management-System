@@ -55,12 +55,19 @@ namespace EmployeeManagement
         private static int payrollID = 0;
         public static List<Payroll> payroll = new List<Payroll>();
 
+        //AddPayroll for Permanent employees
         public static void AddPayroll(int employeeID, string employeeName, string department, string type, double basicPay, double allowance, double deductions, double salary)
         {
             DateOnly date = DateOnly.FromDateTime(DateTime.Now);
 
             //Saving to list
             payroll = Fetch();
+
+            //Checking for Duplicate payroll entries
+            if (payroll.Any(p => p.EmployeeId == employeeID && p.EmpName == employeeName))
+            {
+                throw new InvalidOperationException($"Payroll entry already exists for the Employee {employeeName} on {date}");
+            }
            
             if (payroll.Count == 0)
             {
@@ -68,7 +75,7 @@ namespace EmployeeManagement
             }
             else
             {
-                payrollID = payroll.Count + 1;
+                payrollID =id+ payroll.Count;
             }
 
             //Adding to the list
@@ -78,6 +85,8 @@ namespace EmployeeManagement
             Save();
             
         }
+
+        //AddPayroll for Contract employees
         public static void AddPayroll(int employeeID, string employeeName, string department, string type, double hours, double hourlyRate, double salary)
         {
             DateOnly date = DateOnly.FromDateTime(DateTime.Now);
@@ -85,14 +94,22 @@ namespace EmployeeManagement
             //Saving to List
             payroll = Fetch();
 
+            //Checking for Duplicate payroll entries
+            if (payroll.Any(p => p.EmployeeId == employeeID && p.EmpName == employeeName))
+            {
+                throw new InvalidOperationException($"Payroll entry already exists for the Employee {employeeName} on {date}");
+                
+            }
+
             if (payroll.Count == 0)
             {
                 payrollID = id;
             }
             else
             {
-                payrollID = payroll.Count + 1;
+                payrollID =id+ payroll.Count;
             }
+
             //Adding to the list
             payroll.Add(new Payroll(payrollID,employeeID, employeeName, department, type,null,null,null, hours, hourlyRate, salary, date));
 
@@ -104,7 +121,7 @@ namespace EmployeeManagement
             payroll = Fetch();
             if(payroll.Count==0)
             {
-                Console.WriteLine("Payroll History is Empty");
+                throw new InvalidOperationException("Payroll History is Empty");
             }
             else
             {
@@ -119,16 +136,18 @@ namespace EmployeeManagement
 
         public static List<Payroll> Fetch()
         {
-            String data = null;
+            List<Payroll> temp = new List<Payroll>();
             using(StreamReader sr=new StreamReader("../../../PayrollHistory.txt"))
             {
-                data = sr.ReadToEnd();
-            }
-            List<Payroll> temp = new List<Payroll>();
-            if(!string.IsNullOrWhiteSpace(data))
-            {
-                temp = JsonSerializer.Deserialize<List<Payroll>>(data);
-                
+                string data;
+                while((data = sr.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(data))
+                    {
+                        Payroll record=JsonSerializer.Deserialize<Payroll>(data);
+                        temp.Add(record);
+                    }
+                }
             }
             return temp;
         }
@@ -136,8 +155,13 @@ namespace EmployeeManagement
         {
             using (StreamWriter sw=new StreamWriter("../../../PayrollHistory.txt"))
             {
-                string data=JsonSerializer.Serialize(payroll);
-                sw.WriteLine(data);
+                foreach(var record in payroll)
+                {
+                    string data = JsonSerializer.Serialize(record, new JsonSerializerOptions { WriteIndented = false });
+                    sw.WriteLine(data);
+                }
+                
+                
             }
         }
     }
