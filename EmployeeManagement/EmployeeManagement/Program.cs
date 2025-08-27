@@ -96,11 +96,11 @@ namespace EmployeeManagement
         //Delete Employee
         private static void DeleteEmp()
         {
+            SqlConnection connection = ConnectToDb();
             try
             {
                 Console.Write("Enter the Employee id :");
                 int id = int.Parse(Console.ReadLine());
-                SqlConnection connection = ConnectToDb();
                 SqlCommand commandToGetEmpById = connection.CreateCommand();
                 commandToGetEmpById.CommandText = "select * from Employees where EmpId = @id";
                 commandToGetEmpById.Parameters.AddWithValue("@id", id);
@@ -142,6 +142,10 @@ namespace EmployeeManagement
             {
                 Console.WriteLine(ex.Message);
             }
+            finally
+            {
+                connection.Close();
+            }
 
         }
 
@@ -149,17 +153,18 @@ namespace EmployeeManagement
         // Updating Employee
         private static void UpdateEmployee()
         {
+            SqlConnection connection = ConnectToDb();
             try
             {
-                SqlConnection connection = ConnectToDb();
+
                 SqlCommand commandToGetEmpById = connection.CreateCommand();
                 commandToGetEmpById.CommandText = "select * from Employees where EmpId = @id";
-       
+
                 Console.Write("Enter the Employee id :");
                 bool found = false;
                 int id = int.Parse(Console.ReadLine());
                 commandToGetEmpById.Parameters.AddWithValue("@id", id);
-                using(SqlDataReader reader = commandToGetEmpById.ExecuteReader())
+                using (SqlDataReader reader = commandToGetEmpById.ExecuteReader())
                 {
                     if (!reader.Read())
                     {
@@ -193,7 +198,7 @@ namespace EmployeeManagement
                         commandToUpdateName.CommandText = "update Employees set EmpName = @name where EmpId = @id";
                         commandToUpdateName.Parameters.AddWithValue("@name", newName);
                         commandToUpdateName.Parameters.AddWithValue("@id", id);
-                        if(commandToUpdateName.ExecuteNonQuery()!=1)
+                        if (commandToUpdateName.ExecuteNonQuery() != 1)
                         {
                             throw new Exception("Updation in Db Failed");
                         }
@@ -242,6 +247,10 @@ namespace EmployeeManagement
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
             }
 
             
@@ -295,6 +304,7 @@ namespace EmployeeManagement
         // Adding New Employee
         public static void AddEmployee()
         {
+            SqlConnection connection = ConnectToDb();
             try
             {
                 Console.WriteLine("Enter the employee name :");
@@ -319,7 +329,7 @@ namespace EmployeeManagement
                 Console.WriteLine("Enter the employee annual income :");
                 double income = double.Parse(Console.ReadLine());
                 int id = 0;
-                if(employees.Count > 0) 
+                if (employees.Count > 0)
                 {
                     id = employees.Max(x => x.EmpId) + 1;
                 }
@@ -327,9 +337,9 @@ namespace EmployeeManagement
                 {
                     id++;
                 }
-                SqlConnection connection = ConnectToDb();
+                
 
-                SqlCommand  commandsToIn =connection.CreateCommand();
+                SqlCommand commandsToIn = connection.CreateCommand();
                 commandsToIn.CommandText = "INSERT INTO Employees (EmpId, EmpName, Income, Dept, Type) VALUES (@id, @name, @income, @dept, @type)";
                 commandsToIn.Parameters.AddWithValue("@id", id);
                 commandsToIn.Parameters.AddWithValue("@name", name);
@@ -339,7 +349,7 @@ namespace EmployeeManagement
 
                 int succes = commandsToIn.ExecuteNonQuery();
                 connection.Close();
-                if(succes > 0)
+                if (succes > 0)
                 {
                     Console.WriteLine("Added to database Also");
                 }
@@ -347,9 +357,9 @@ namespace EmployeeManagement
                 {
                     throw new Exception("Adding to database failed..");
                 }
-                
 
-                    employees.Add(new Employee(id, name, income, dept, type));
+
+                employees.Add(new Employee(id, name, income, dept, type));
 
                 Save();
             }
@@ -357,6 +367,11 @@ namespace EmployeeManagement
             {
                 Console.WriteLine(ex.Message);
             }
+            finally
+            {
+                connection.Close();
+            }
+            
         }
 
         //Function to save to Db.txt
@@ -384,14 +399,27 @@ namespace EmployeeManagement
             }
         }
 
+
+        //Extablising Connection
         public static SqlConnection ConnectToDb()
         {
-            SqlConnection sqlConnection = new SqlConnection();
-            sqlConnection.ConnectionString = "Data Source=447D79DDBACD5CB\\SQLEXPRESS;Initial Catalog=EmployeeManagementSystem;Integrated Security=True;Trust Server Certificate=True";
-            sqlConnection.Open();
-            return sqlConnection;
+            try
+            {
+                SqlConnection sqlConnection = new SqlConnection();
+                sqlConnection.ConnectionString = "Data Source=68BB9B2B44F1500\\SQLEXPRESS;Initial Catalog=EmployeeManagement;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+                sqlConnection.Open();
+                return sqlConnection;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            ;
         }
 
+
+        //Report Generation
         public static void ReportServiceMenu()
         {
 
