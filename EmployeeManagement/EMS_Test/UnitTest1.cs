@@ -1,4 +1,6 @@
 using EmployeeManagement;
+using EmployeeManagement.Models;
+using EmployeeManagement.Services;
 
 namespace EMS_Test
 {
@@ -20,7 +22,7 @@ namespace EMS_Test
             Console.SetOut(output);
 
             
-            double salary = SalaryProcessing.calculateSalary(employees);
+            double salary = SalaryServices.calculateSalary(employees);
 
             
             Assert.Equal(0, salary);

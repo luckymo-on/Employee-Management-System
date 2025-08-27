@@ -1,14 +1,18 @@
-﻿using System;
+﻿using EmployeeManagement.Models;
+using EmployeeManagement.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EmployeeManagement
+namespace EmployeeManagement.Services
 {
     public static class ReportService
     {
         // Filter employees by name (case-insensitive contains)
-        public static void EmployeeByName(List<Employee> employees, string namePart)
+       private static List<Employee> employees = new List<Employee>();
+        public static void EmployeeByName( string namePart)
         {
+            employees = EmployeeServices.FetchEmployees();
             var results = employees
                 .Where(e => e.EmpName.Contains(namePart, StringComparison.OrdinalIgnoreCase))
                 .ToList();
@@ -27,8 +31,9 @@ namespace EmployeeManagement
         }
 
         // Filter employees by department
-        public static void EmployeeByDepartment(List<Employee> employees, string dept)
+        public static void EmployeeByDepartment( string dept)
         {
+            employees = EmployeeServices.FetchEmployees();
             var results = employees
                 .Where(e => e.Department.Equals(dept, StringComparison.OrdinalIgnoreCase))
                 .ToList();
@@ -49,7 +54,7 @@ namespace EmployeeManagement
         // Generate salary summary (latest payroll entry for given employee)
         public static void PaySlip(int empId)
         {
-            var payrolls = PayrollService.Fetch()
+            var payrolls = FileRepo.Fetch()
                 .Where(p => p.EmployeeId == empId)
                 .OrderByDescending(p => p.PaymentDate)
                 .Take(3) // last 3 months
@@ -101,7 +106,7 @@ namespace EmployeeManagement
         // Find Employees by Type
         public static void EmployeeByType()
         {
-            var payrolls = PayrollService.Fetch();
+            var payrolls = FileRepo.Fetch();
 
             if (payrolls.Count == 0)
             {

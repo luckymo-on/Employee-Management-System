@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <StartupObject>EmployeeManagement.Program</StartupObject>
+    <StartupObject>EmployeeManagement.UI.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

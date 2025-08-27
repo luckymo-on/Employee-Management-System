@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace EmployeeManagement
+namespace EmployeeManagement.Models
 {
 	public class Employee
 	{
