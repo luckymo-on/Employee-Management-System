@@ -8,7 +8,7 @@ namespace EMS_Test
        //SalaryProcessing.CalculateSalary() test
        //Testing if employee exists to calculate salary
         [Fact]
-        public void CalculateSalary_WhenEmployeeNotFound_ReturnsZero()
+        public void CalculateSalary_ShouldPrintMessage_WhenNoEmployees()
         {
             
             var employees = new List<Employee>();
