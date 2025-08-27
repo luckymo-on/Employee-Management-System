@@ -5,6 +5,7 @@ namespace EMS_Test
     public class UnitTest1
     {
 
+       //SalaryProcessing.CalculateSalary() test
        //Testing if employee exists to calculate salary
         [Fact]
         public void CalculateSalary_WhenEmployeeNotFound_ReturnsZero()
@@ -26,7 +27,9 @@ namespace EMS_Test
             Assert.Contains("Employee not found", output.ToString());
         }
 
+        //ReportService.EmployeeByName() test
         //testing if filtering by name works
+
         //if employee found
         [Fact]
         public void EmployeeByName_ShouldPrintEmployee_WhenNameMatches()
@@ -46,7 +49,7 @@ namespace EMS_Test
             
             var output = sw.ToString();
             Assert.Contains("Alice", output);
-           // Assert.Contains("Employees with name containing", output);
+            Assert.Contains("Employees with name containing", output);
         }
 
         // if there is no employee after filtering
@@ -64,8 +67,9 @@ namespace EMS_Test
             Assert.Contains("No employees found in department 'IT'", output);
         }
 
-        ////testing if filtering by dept works
-        
+        ///ReportService.EmployeeByDept() test
+        //testing if filtering by dept works
+
         [Fact]
         public void EmployeeByDepartment_ShouldPrintEmployee_WhenDepartmentMatches()
         {
