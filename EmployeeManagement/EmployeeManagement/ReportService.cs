@@ -99,51 +99,37 @@ namespace EmployeeManagement
 
 
         // Find Employees by Type
-        public static void EmployeeByType()
+        public static void EmployeeByType(List<Employee> employees)
         {
-            var payrolls = PayrollService.Fetch();
-
-            if (payrolls.Count == 0)
-            {
-                Console.WriteLine("No payroll records found.");
-                return;
-            }
+            var permanent = employees.Where(e => e.Type.Equals("Permanent", StringComparison.OrdinalIgnoreCase));
+            var contract = employees.Where(e => e.Type.Equals("Contract", StringComparison.OrdinalIgnoreCase));
 
             Console.WriteLine("===== Permanent Employees =====");
-            var permanent = payrolls
-                .Where(p => p.Type.Equals("Permanent", StringComparison.OrdinalIgnoreCase))
-                .GroupBy(p => p.EmployeeId) // one record per employee (latest)
-                .Select(g => g.OrderByDescending(p => p.PaymentDate).First());
-
             if (!permanent.Any())
             {
                 Console.WriteLine("No permanent employees found.");
             }
+
             else
             {
-                foreach (var p in permanent)
+                foreach (var emp in permanent)
                 {
-                    Console.WriteLine($"{p.EmpName} | BasicPay: {p.BasicPay} | Allowance: {p.Allowance} | Deductions: {p.Deductions} | Salary: {p.Salary}");
+                    Console.WriteLine($"{emp.EmpId} - {emp.EmpName} - {emp.Department} - {emp.AnnualIncome}");
                 }
-            }
+            }       
 
             Console.WriteLine("\n===== Contract Employees =====");
-            var contract = payrolls
-                .Where(p => p.Type.Equals("Contract", StringComparison.OrdinalIgnoreCase))
-                .GroupBy(p => p.EmployeeId)
-                .Select(g => g.OrderByDescending(p => p.PaymentDate).First());
-
             if (!contract.Any())
             {
                 Console.WriteLine("No contract employees found.");
             }
             else
             {
-                foreach (var p in contract)
+                foreach (var emp in contract)
                 {
-                    Console.WriteLine($"{p.EmpName} | Hours: {p.Hours} | HourlyRate: {p.HourlyRate} | Salary: {p.Salary}");
+                    Console.WriteLine($"{emp.EmpId} - {emp.EmpName} - {emp.Department} - {emp.AnnualIncome}");
                 }
-            }
+            }         
         }
     }
 }

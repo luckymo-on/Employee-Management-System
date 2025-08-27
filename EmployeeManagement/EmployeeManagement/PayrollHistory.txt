@@ -1,0 +1,1 @@
+{"PayrollId":100,"EmployeeId":1,"EmpName":"manu","Department":"It","Type":"Permanent","BasicPay":16666.58,"Allowance":3333.32,"Deductions":1666.66,"Hours":null,"HourlyRate":null,"Salary":18333.24,"PaymentDate":"2025-08-26"}
