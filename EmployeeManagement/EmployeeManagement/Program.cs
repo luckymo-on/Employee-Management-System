@@ -25,7 +25,7 @@ namespace EmployeeManagement
                 int choice = 0;
                 while (choice != -1)
                 {
-                    Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Delete employee\n5.Calculate Salary\n6.View Payroll History\n7.Report Service Menu\n8.Exit\nEnter Your Choice :"); choice = int.Parse(Console.ReadLine());
+                    Console.WriteLine("1.Add employee\n2.Update employee Details\n3.View Employees\n4.Delete employee\n5.Calculate Salary\n6.View Payroll History\n7.Generate Reports\n8.Exit\nEnter Your Choice :"); choice = int.Parse(Console.ReadLine());
                     switch (choice)
                     {
                         case 1:
@@ -309,8 +309,7 @@ namespace EmployeeManagement
             {
                 Console.WriteLine("Enter the employee name :");
                 string name = Console.ReadLine();
-                Console.WriteLine("Enter the employee department :");
-                string dept = Console.ReadLine();
+                string dept = DepartmentService.PromptDepartment();
                 Console.WriteLine("Enter the employee type \np.Permanant\nc.Contract:");
                 string ch = Console.ReadLine().ToLower();
                 string type = null;
@@ -406,7 +405,7 @@ namespace EmployeeManagement
             try
             {
                 SqlConnection sqlConnection = new SqlConnection();
-                sqlConnection.ConnectionString = "Data Source=03A0EFA6CC12509\\SQLEXPRESS;Initial Catalog=EMS_DB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+                sqlConnection.ConnectionString = "Data Source=68BB9B2B44F1500\\SQLEXPRESS;Initial Catalog=EmployeeManagement;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
                 sqlConnection.Open();
                 return sqlConnection;
             }
@@ -462,7 +461,7 @@ namespace EmployeeManagement
 
                     case 4:
                         Console.WriteLine("______________________________________");
-                        ReportService.EmployeeByType();
+                        ReportService.EmployeeByType(employees);
                         break;
 
                     case 5:
@@ -473,6 +472,45 @@ namespace EmployeeManagement
                         Console.WriteLine("Invalid choice");
                         break;
                 }
+            }
+        }
+
+        public static class DepartmentService
+        {
+            // This will hold all unique departments
+            private static List<string> departments = new List<string>();
+
+            // Add a department if it's new
+            public static void AddDepartment(string dept)
+            {
+                if (!string.IsNullOrWhiteSpace(dept) &&
+                    !departments.Exists(d => d.Equals(dept, StringComparison.OrdinalIgnoreCase)))
+                {
+                    departments.Add(dept.Trim());
+                }
+            }
+
+            // Display current departments
+            public static void DisplayDepartments()
+            {
+                if (departments.Count == 0)
+                {
+                    Console.WriteLine("No departments added yet.");
+                }
+                else
+                {
+                    Console.WriteLine("Current Departments: " + string.Join(", ", departments));
+                }
+            }
+
+            // Prompt the user to enter a department and show existing ones
+            public static string PromptDepartment()
+            {
+                DisplayDepartments();
+                Console.Write("Enter department: ");
+                string input = Console.ReadLine().Trim();
+                AddDepartment(input);
+                return input;
             }
         }
     }
