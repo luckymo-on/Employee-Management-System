@@ -81,6 +81,7 @@ namespace EmployeeManagement.UI
 
                         case 7:
                             ReportServiceMenu();
+                            Ui.PrintSectionBorder();
                             break;
 
                         case 8:
@@ -125,7 +126,7 @@ namespace EmployeeManagement.UI
 
             while (true)
             {
-                Console.WriteLine("______________________________________");
+                Console.WriteLine();
                 Console.WriteLine("1. Find Employees By Name");
                 Console.WriteLine("2. Display All Employees By Department");
                 Console.WriteLine("3. PaySlip");
@@ -137,7 +138,7 @@ namespace EmployeeManagement.UI
                 switch (ch)
                 {
                     case 1:
-                        Console.WriteLine("______________________________________");
+                        Console.WriteLine();
                         Console.Write("Enter Name to search :");
                         string name = Console.ReadLine();
                         Console.WriteLine();
@@ -146,7 +147,7 @@ namespace EmployeeManagement.UI
                         break;
 
                     case 2:
-                        Console.WriteLine("______________________________________");
+                        Console.WriteLine();
                         Console.Write("Enter Department to search :");
                         string dept = Console.ReadLine();
                         Console.WriteLine();
@@ -154,7 +155,7 @@ namespace EmployeeManagement.UI
                         break;
 
                     case 3:
-                        Console.WriteLine("______________________________________");
+                        Console.WriteLine();
                         Console.Write("Enter employee ID (PaySlip) :");
                         int id = int.Parse(Console.ReadLine());
                         Console.WriteLine();
@@ -162,12 +163,12 @@ namespace EmployeeManagement.UI
                         break;
 
                     case 4:
-                        Console.WriteLine("______________________________________");
+                        Console.WriteLine();
                         ReportService.EmployeeByType();
                         break;
 
                     case 5:
-                        Console.WriteLine("______________________________________");
+                        Console.WriteLine();
                         return;
 
                     default:

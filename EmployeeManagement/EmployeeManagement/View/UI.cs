@@ -50,7 +50,7 @@ namespace EmployeeManagement
             Console.WriteLine("[4] Delete Employee");
             Console.WriteLine("[5] Calculate Salary");
             Console.WriteLine("[6] View Payroll History");
-            Console.WriteLine("[7] Generate report");
+            Console.WriteLine("[7] Generate Report");
             Console.WriteLine("[8] Exit");
 
             Console.WriteLine();
