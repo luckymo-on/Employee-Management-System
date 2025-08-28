@@ -49,7 +49,7 @@ namespace EmployeeManagement.Services
                     }
                     else // Contract employee
                     {
-                        Console.WriteLine("Enter the hours worked");
+                        Console.WriteLine($"Enter the hours worked for {emp.EmpName}");
                         double hours = double.Parse(Console.ReadLine());
                         Math.Round(hours, 2);
                         if (hours < 0)
