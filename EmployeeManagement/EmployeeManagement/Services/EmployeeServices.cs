@@ -301,12 +301,15 @@ namespace EmployeeManagement.Services
         // Display current departments
         public static void DisplayDepartments()
         {
-            if (departments.Count == 0)
+            List<Employee> temp = FileRepo.FetchEmployees();
+
+            if (temp.Count == 0)
             {
                 Console.WriteLine("No departments added yet.");
             }
             else
             {
+                departments = temp.Select(x => x.Department).Distinct().ToList();
                 Console.WriteLine("Current Departments : " + string.Join(", ", departments));
             }
         }
