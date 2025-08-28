@@ -62,11 +62,11 @@ namespace EmployeeManagement.Services
             try
             {
                 FetchEmployees();
-                Console.Write("Enter the employee name :");
+                Console.Write("Enter the employee name (Max 16 Characters):");
                 string name = Console.ReadLine();
-                if (!Regex.IsMatch(name, @"^[A-Za-z\s]+$"))
+                if (!Regex.IsMatch(name, @"^[A-Za-z\s]{1,16}$"))
                 {
-                    throw new Exception("Invalid Name. Name should only contain letters and spaces");
+                    throw new Exception("Invalid Name. Name should only contain letters and spaces (max 16 characters).");
                 }
                 else
                 {
@@ -156,9 +156,9 @@ namespace EmployeeManagement.Services
                     case 1:
                         Console.Write("Enter new name :");
                         string newName = Console.ReadLine();
-                        if (!Regex.IsMatch(newName, @"^[A-Za-z\s]+$"))
+                        if (!Regex.IsMatch(newName, @"^[A-Za-z\s]{1,16}$"))
                         {
-                            throw new Exception("Invalid Name. Name should only contain letters and spaces");
+                            throw new Exception("Invalid Name. Name should only contain letters and spaces (max 16 characters).");
                         }
                         else
                         {
