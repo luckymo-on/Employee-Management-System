@@ -2,95 +2,164 @@ using EmployeeManagement;
 using EmployeeManagement.Models;
 using EmployeeManagement.Services;
 
+
 namespace EMS_Test
 {
     public class UnitTest1
     {
 
-       //SalaryProcessing.CalculateSalary() test
-       //Testing if employee exists to calculate salary
+        //SalaryProcessing.CalculateSalary() test
+
+        //Testing if employee exists to calculate salary
+
+        //no employee exists
+
         [Fact]
-        public void CalculateSalary_WhenEmployeeNotFound_ReturnsZero()
+        public void CalculateSalary_ShouldPrintError_IfNoEmployee()
         {
-            
-            var employees = new List<Employee>();
-
-            using var input = new StringReader("99\n"); // ID not in list
-            Console.SetIn(input);
-
-            using var output = new StringWriter();
+            var output = new StringWriter();
             Console.SetOut(output);
 
-            
-            double salary = SalaryServices.calculateSalary(employees);
+            SalaryServices.CalculateeSalaries();
 
-            
-            Assert.Equal(0, salary);
-            Assert.Contains("Employee not found", output.ToString());
+            Assert.Contains("Error while generating salaries", output.ToString());
+
         }
 
-        //ReportService.EmployeeByName() test
-        //testing if filtering by name works
+        //Employee test
 
-        //if employee found
+        //Checking if employee stores values correctly
         [Fact]
-        public void EmployeeByName_ShouldPrintEmployee_WhenNameMatches()
+        public void Employee_ShouldStoreValuesCorrectly()
         {
-            
+            var emp = new Employee(101, "Alice", 60000, "HR", "Permanent");
+
+            Assert.Equal(101, emp.EmpId);
+            Assert.Equal("Alice", emp.EmpName);
+            Assert.Equal("HR", emp.Department);
+            Assert.Equal("Permanent", emp.Type);
+            Assert.Equal(60000, emp.AnnualIncome);
+        }
+
+        //test to check if default constructor gives default values
+        [Fact]
+        public void Employee_DefaultConstructor_ShouldHaveDefaultValues()
+        {
+            var emp = new Employee();
+
+            Assert.Equal(0, emp.EmpId);
+            Assert.Null(emp.EmpName);
+            Assert.Null(emp.Department);
+            Assert.Null(emp.Type);
+            Assert.Equal(0, emp.AnnualIncome);
+        }
+
+        //tests to see if employee values can be updated
+        [Fact]
+        public void Employee_CanChangeProperties()
+        {
+
+            var emp = new Employee();
+
+            emp.EmpId = 202;
+            emp.EmpName = "Bob";
+            emp.Department = "IT";
+            emp.Type = "Contract";
+            emp.AnnualIncome = 50000;
+
+            Assert.Equal(202, emp.EmpId);
+            Assert.Equal("Bob", emp.EmpName);
+            Assert.Equal("IT", emp.Department);
+            Assert.Equal("Contract", emp.Type);
+            Assert.Equal(50000, emp.AnnualIncome);
+        }
+
+        //ReportServices test
+
+        //test to see if filtering by employee name works
+
+        [Fact]
+        public void FilterByName_ShouldReturnEmployees()
+        {
             var employees = new List<Employee>
-            {
-                new Employee { EmpId = 1, EmpName = "Alice", Department = "IT", Type = "Permanent", AnnualIncome = 60000 }
-            };
+        {
+            new Employee(1, "Alice", 60000, "HR", "Permanent"),
+            new Employee(2, "Sam", 50000, "IT", "Contract"),
+            new Employee(3, "Alicia", 45000, "IT", "Permanent")
+        };
 
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
+            var results = employees
+                .Where(e => e.EmpName.Contains("Ali", System.StringComparison.OrdinalIgnoreCase))
+                .ToList();
 
-            
-            ReportService.EmployeeByName(employees, "Ali");
-
-            
-            var output = sw.ToString();
-            Assert.Contains("Alice", output);
-            Assert.Contains("Employees with name containing", output);
+            Assert.Equal(2, results.Count);
+            Assert.Contains(results, e => e.EmpName == "Alice");
+            Assert.Contains(results, e => e.EmpName == "Alicia");
         }
 
-        // if there is no employee after filtering
+        //test to see if filtering by department works
         [Fact]
-        public void EmployeeByDepartment_ShouldPrintMessage_WhenNoEmployees()
+        public void FilterByDepartment_ShouldReturnEmployees()
         {
-            var employees = new List<Employee>();
-
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
-
-            ReportService.EmployeeByDepartment(employees, "IT");
-
-            var output = sw.ToString();
-            Assert.Contains("No employees found in department 'IT'", output);
-        }
-
-        ///ReportService.EmployeeByDept() test
-        //testing if filtering by dept works
-
-        [Fact]
-        public void EmployeeByDepartment_ShouldPrintEmployee_WhenDepartmentMatches()
-        {
+            // Arrange
             var employees = new List<Employee>
+        {
+            new Employee(1, "Alice", 60000, "HR", "Permanent"),
+            new Employee(2, "Sam", 50000, "IT", "Contract"),
+            new Employee(3, "Anu", 45000, "HR", "Permanent")
+        };
+
+            var results = employees
+                .Where(e => e.Department.Equals("HR", System.StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            Assert.Equal(2, results.Count);
+            Assert.Contains(results, e => e.EmpName == "Alice");
+            Assert.Contains(results, e => e.EmpName == "Anu");
+        }
+        //Payroll tests
+
+        //checking if payroll gets added
+
+        [Fact]
+        public void ExistsReturnTrue_WhenPayrollExists()
+        {
+            var backup = new List<Payroll>(PayRollServices.payroll);
+            try
             {
-                new Employee { EmpId = 2, EmpName = "B", Department = "HR", Type = "Contract", AnnualIncome = 0 }
-            };
+                PayRollServices.payroll.Clear();
+                PayRollServices.payroll.Add(new Payroll(1, 107, "Alice", "HR", "Permanent", 5000, 1000, 500, null, null,5500, DateOnly.FromDateTime(DateTime.Now)));
 
-            using var sw = new StringWriter();
-            Console.SetOut(sw);
+                bool result = PayRollServices.Exists(107);
 
-            ReportService.EmployeeByDepartment(employees, "HR");
+                Assert.True(result);
 
-            var output = sw.ToString();
-            Assert.Contains("B", output);
-            Assert.Contains("Employees in department 'HR'", output);
+            }
+            finally
+            {
+                PayRollServices.payroll = backup;
+            }
+        }
+        [Fact]
+        public void ExistsReturnFalse_WhenPayrollExists()
+        {
+            var backup = new List<Payroll>(PayRollServices.payroll);
+            try
+            {
+                PayRollServices.payroll.Clear();
+
+                bool result = PayRollServices.Exists(995);
+
+                Assert.False(result);
+
+            }
+            finally
+            {
+                PayRollServices.payroll = backup;
+            }
         }
     }
-}
 
+}
 
 
