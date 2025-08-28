@@ -147,6 +147,15 @@ namespace EmployeeManagement.Services
                 if (!found)
                 {
                     throw new Exception("Invalid User ID or No user found with this ID");
+                }else 
+                if (found)
+                {
+                    Console.WriteLine("+--------+------------------+------------+-----------+---------------+");
+                    Console.WriteLine("| EmpId  | EmpName          | Department | Type      | AnnualIncome  |");
+                    Console.WriteLine("+--------+------------------+------------+-----------+---------------+");
+                    Console.WriteLine("| {0,-6} | {1,-16} | {2,-10} | {3,-9} | {4,13:N2} |",
+                            emp.EmpId, emp.EmpName, emp.Department, emp.Type, emp.AnnualIncome);
+                    Console.WriteLine("+--------+------------------+------------+-----------+---------------+");
                 }
                 Console.WriteLine();
                 Console.Write("[1] Name\n[2] AnnualInconme\n[3] Department\n What do you wish to update ? : ");
@@ -260,6 +269,7 @@ namespace EmployeeManagement.Services
         public static List<Employee> FetchEmployees()
         {
             employees = FileRepo.FetchEmployees();
+            employees = employees.OrderBy(e => e.EmpId).ToList();
             if (employees == null)
             {
                 employees = new List<Employee>();
