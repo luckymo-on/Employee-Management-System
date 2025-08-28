@@ -117,16 +117,19 @@ namespace EmployeeManagement.Services
             Console.WriteLine(border);
             Console.WriteLine("                 PAYSLIP                 ");
             Console.WriteLine(border);
-            Console.WriteLine($"| {"Employee ID",-15} : {selected.EmployeeId,-20} |");
-            Console.WriteLine($"| {"Name",-15} : {selected.EmpName,-20} |");
-            Console.WriteLine($"| {"Department",-15} : {selected.Department,-20} |");
-            Console.WriteLine($"| {"Type",-15} : {selected.Type,-20} |");
+            Console.WriteLine($"| {"Employee ID",-15} : {selected.EmployeeId,20} |");
+            Console.WriteLine($"| {"Name",-15} : {selected.EmpName,20} |");
+            Console.WriteLine($"| {"Department",-15} : {selected.Department,20} |");
+            Console.WriteLine($"| {"Type",-15} : {selected.Type,20} |");
             Console.WriteLine(separator);
-            Console.WriteLine($"| {"Basic Pay",-15} : {selected.BasicPay,20:F2} |");
-            Console.WriteLine($"| {"Allowance",-15} : {selected.Allowance,20:F2} |");
-            Console.WriteLine($"| {"Deductions",-15} : {selected.Deductions,20:F2} |");
+            if (selected.Type == "Permanent")
+            {
+                Console.WriteLine($"| {"Basic Pay",-15} : {selected.BasicPay,20:F2} |");
+                Console.WriteLine($"| {"Allowance",-15} : {selected.Allowance,20:F2} |");
+                Console.WriteLine($"| {"Deductions",-15} : {selected.Deductions,20:F2} |");
+            }
 
-            if (selected.Type == "Contract")
+            else if (selected.Type == "Contract")
             {
                 Console.WriteLine($"| {"Hours Worked",-15} : {selected.Hours,20} |");
                 Console.WriteLine($"| {"Hourly Rate",-15} : {selected.HourlyRate,20:F2} |");

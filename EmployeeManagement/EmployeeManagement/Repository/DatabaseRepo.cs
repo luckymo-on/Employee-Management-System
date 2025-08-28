@@ -18,7 +18,7 @@ namespace EmployeeManagement.Repository
             try
             {
                 SqlConnection sqlConnection = new SqlConnection();
-                sqlConnection.ConnectionString = "Data Source=0FFB3AAAED63595\\SQLEXPRESS;Initial Catalog=EMS;Integrated Security=True;Trust Server Certificate=True";
+                sqlConnection.ConnectionString = "Data Source=447D79DDBACD5CB\\SQLEXPRESS;Initial Catalog=EmployeeManagementSystem;Integrated Security=True;Trust Server Certificate=True";
                 sqlConnection.Open();
                 return sqlConnection;
             }

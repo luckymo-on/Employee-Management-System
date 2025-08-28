@@ -44,7 +44,7 @@ namespace EmployeeManagement.Services
                 }
                 else
                 {
-                    throw new Exception("Currently no employees");
+                    throw new Exception("There are currently no employees");
                 }
             }
             catch (Exception ex)
@@ -73,7 +73,7 @@ namespace EmployeeManagement.Services
                     name = char.ToUpper(name[0]) + name.Substring(1);
                 }
                 string dept = DepartmentService.PromptDepartment();
-                Console.Write("Enter the employee type \np.Permanant\nc.Contract:\n");
+                Console.Write("Enter the employee type \np.Permanant\nc.Contract: ");
                 string ch = Console.ReadLine().ToLower();
                 string type = null;
                 if (ch.ToLower() == "p")
@@ -255,15 +255,7 @@ namespace EmployeeManagement.Services
 
         }
 
-        //public static List<Employee> FetchEmployees()
-        //{
-        //    employees = FileRepo.FetchEmployees();
-        //        if(employees == null)
-        //{
-        //    employees= new List<Employee>();
-        //}
-        //        return employees;
-        //}
+      
 
         public static List<Employee> FetchEmployees()
         {

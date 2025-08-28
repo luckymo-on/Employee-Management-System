@@ -12,7 +12,7 @@ namespace EmployeeManagement
         public static void PrintError(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;   
-            Console.WriteLine("ERROR: " + message);
+            Console.WriteLine( message);
             Console.ResetColor();
         }
 
