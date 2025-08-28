@@ -1,1 +1,1 @@
-[{"EmpId":1,"EmpName":"Haripriya","AnnualIncome":425000,"Department":"IT","Type":"Permanent"},{"EmpId":2,"EmpName":"Neeraj","AnnualIncome":500000,"Department":"HR","Type":"Contract"},{"EmpId":3,"EmpName":"Nihad","AnnualIncome":425000,"Department":"IT","Type":"Permanent"}]
+[]
