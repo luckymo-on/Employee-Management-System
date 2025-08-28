@@ -28,7 +28,7 @@ namespace EmployeeManagement.Services
                     Console.WriteLine("Current Employees Are :");
 
                     Console.WriteLine("+--------+------------------+------------+-----------+---------------+");
-                    Console.WriteLine("| EmpId  | EmpName           | Department | Type      | AnnualIncome  |");
+                    Console.WriteLine("| EmpId  | EmpName          | Department | Type      | AnnualIncome  |");
                     Console.WriteLine("+--------+------------------+------------+-----------+---------------+");
 
                     // Print employee rows
@@ -58,7 +58,7 @@ namespace EmployeeManagement.Services
         // Adding New Employee
         public static void AddEmployee()
         {
-            
+
             try
             {
                 FetchEmployees();
@@ -73,7 +73,7 @@ namespace EmployeeManagement.Services
                     name = char.ToUpper(name[0]) + name.Substring(1);
                 }
                 string dept = DepartmentService.PromptDepartment();
-                Console.Write("Enter the employee type \np.Permanant\nc.Contract:");
+                Console.Write("Enter the employee type \np.Permanant\nc.Contract:\n");
                 string ch = Console.ReadLine().ToLower();
                 string type = null;
                 if (ch.ToLower() == "p")
@@ -116,7 +116,7 @@ namespace EmployeeManagement.Services
             {
                 Ui.PrintError(ex.Message);
             }
-            
+
 
         }
 
@@ -124,7 +124,7 @@ namespace EmployeeManagement.Services
         // Updating Employee
         public static void UpdateEmployee()
         {
-            
+
             try
             {
 
@@ -133,7 +133,7 @@ namespace EmployeeManagement.Services
                 Console.Write("Enter the Employee id :");
                 bool found = false;
                 int id = int.Parse(Console.ReadLine());
-                
+
                 Employee emp = new Employee();
                 foreach (var item in employees)
                 {
@@ -215,11 +215,6 @@ namespace EmployeeManagement.Services
             {
                 Ui.PrintError(ex.Message);
             }
-            
-
-
-
-
         }
 
         //Delete Employee
@@ -230,7 +225,7 @@ namespace EmployeeManagement.Services
                 FetchEmployees();
                 Console.Write("Enter the Employee id :");
                 int id = int.Parse(Console.ReadLine());
-                
+
                 bool found = false;
                 foreach (var item in employees)
                 {
@@ -256,22 +251,36 @@ namespace EmployeeManagement.Services
             {
                 Ui.PrintError(ex.Message);
             }
-            
+
 
         }
 
-            public static List<Employee> FetchEmployees()
+        //public static List<Employee> FetchEmployees()
+        //{
+        //    employees = FileRepo.FetchEmployees();
+        //        if(employees == null)
+        //{
+        //    employees= new List<Employee>();
+        //}
+        //        return employees;
+        //}
+
+        public static List<Employee> FetchEmployees()
+        {
+            employees = FileRepo.FetchEmployees();
+            if (employees == null)
             {
-                employees = FileRepo.FetchEmployees();
-                    if(employees == null)
-            {
-                employees= new List<Employee>();
+                employees = new List<Employee>();
             }
 
-                    return employees;
-
-        
+            foreach (var emp in employees)
+            {
+                DepartmentService.AddDepartment(emp.Department);
             }
+
+            return employees;
+        }
+
     }
 
     public static class DepartmentService
